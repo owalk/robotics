@@ -1,0 +1,15 @@
+
+
+robot.floor_cover(i)
+
+function floor_cover(int distance)
+
+if (any front sensor to close to object)
+avoid_obstacle()
+else {
+     if(to far left from distance i)
+     veer to the right
+     else if(to far right from distance i)
+     veer to the left
+}
+end function

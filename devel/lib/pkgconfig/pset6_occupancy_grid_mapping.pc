@@ -1,0 +1,8 @@
+prefix=/home/osboxes/Desktop/robotics_ws/devel
+
+Name: pset6_occupancy_grid_mapping
+Description: Description of pset6_occupancy_grid_mapping
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/osboxes/Desktop/robotics_ws/devel/lib 
+Requires: 

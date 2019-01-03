@@ -1,0 +1,2 @@
+map_publisher:pset6_occupancy_grid_mapping:uml_mcl
+-DCATKIN_DEVEL_PREFIX=/home/osboxes/Desktop/robotics_ws/devel -DCMAKE_INSTALL_PREFIX=/home/osboxes/Desktop/robotics_ws/install -G Unix Makefiles

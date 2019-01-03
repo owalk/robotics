@@ -1,0 +1,8 @@
+prefix=/home/osboxes/Desktop/robotics_ws/devel
+
+Name: map_publisher
+Description: Description of map_publisher
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/osboxes/Desktop/robotics_ws/devel/lib 
+Requires: geometry_msgs nav_msgs roscpp rospy std_msgs
