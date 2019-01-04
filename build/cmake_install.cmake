@@ -118,7 +118,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/osboxes/Desktop/robotics_ws/build/gtest/cmake_install.cmake")
   include("/home/osboxes/Desktop/robotics_ws/build/map_publisher/cmake_install.cmake")
-  include("/home/osboxes/Desktop/robotics_ws/build/pset6_occupancy_grid_mapping/cmake_install.cmake")
+  include("/home/osboxes/Desktop/robotics_ws/build/mower_brain/cmake_install.cmake")
   include("/home/osboxes/Desktop/robotics_ws/build/uml_mcl/cmake_install.cmake")
 
 endif()

@@ -6,5 +6,5 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs(gtest)
 subdirs(map_publisher)
-subdirs(pset6_occupancy_grid_mapping)
+subdirs(mower_brain)
 subdirs(uml_mcl)

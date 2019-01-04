@@ -1,0 +1,8 @@
+prefix=/home/osboxes/Desktop/robotics_ws/install
+
+Name: mower_brain
+Description: Description of mower_brain
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/osboxes/Desktop/robotics_ws/install/lib 
+Requires: 
