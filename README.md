@@ -23,24 +23,24 @@ ros kinetic supports Ubuntu 16, Xenial which is what I am running. Figure it out
 in the installation get ros-kinetic-desktop-full
 
 get the following dependencies
-
+```
 sudo apt-get install libcv-dev
 sudo apt-get install libcvaux-dev libhighgui-dev
 sudo apt-get install python-numpy python-opengl
 sudo apt-get install swig
-
+```
 clone my entire work space with
-
+```
 git clone https://github.com/owalk/robotics.git
-
+```
 my work space will have the file paths for my virtual machine. to fix them, delete the top level directories build/ and devel/
-
+```
 rm -r devel/ build/
-
+```
 remake the workspace with
-
+```
 catkin_make
-
+```
 you should see those directories you deleted again.
 
 
@@ -55,15 +55,27 @@ source devel/setup.bash
 ```
 
 Now run:
+Terminal 1
 ```
 roslaunch uml_mcl mcl.launch
-
-rviz
-
-rosrun mower_brain map
-
-for each process that you start, make sure you have source setup.bash in that terminal.
-
-you should always have the mcl.launch running before you run the mower_brain node.
 ```
+Terminal 2
+```
+rosrun mower_brain map
+```
+Terminal 3
+```
+rosrun rviz rviz
+```
+
+when rviz opens, on the left panel press add, then add by topic, then add map
+map is main_map in the code. map2 is mower_map in the code.
+
+on the right panel change the view from type orbit to type top down ortho so you can see it.
+
+
+also, for each process that you start, make sure you have run source devel/setup.bash in that terminal.
+
+and you should always have the mcl.launch running first.
+
 
