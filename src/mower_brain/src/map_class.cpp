@@ -84,14 +84,14 @@ void MyMap::publish(int which_map)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++) 
 		{
-			if(which_map == 2){						
-				oGrid.data.push_back(this->map[i][j]);
-			}
-					
-			else{ 
-				int probability = convert_to_probability(this->map[i][j]);
-				oGrid.data.push_back(probability);
-			}
+		  int probability;
+		  if(which_map == 2){
+		    probability = this->map[i][j] * 100; //to convert to values from 0 to 100
+		    oGrid.data.push_back(probability);
+		  } else{ 
+		    probability = convert_to_probability(this->map[i][j]);
+		    oGrid.data.push_back(probability);
+		  }
 		}
 	}
 
@@ -137,15 +137,15 @@ void MyMap::cut_area(int x, int y, MyMap otherMap)
     }//end for
   }//end for
 
-  int num_cut = 0;
-  for (int i = 0; i < MAP_HEIGHT; i++){
-    for (int j = 0; j < MAP_WIDTH; j++){
-          if( this->map[i][j] < 0.5) //.1
-	    num_cut++;
-    }
-  }
+  // int num_cut = 0;
+  // for (int i = 0; i < MAP_HEIGHT; i++){
+  //   for (int j = 0; j < MAP_WIDTH; j++){
+  //         if( this->map[i][j] < 0.5) //.1
+  // 	    num_cut++;
+  //   }
+  // }
 
-  std::cout << num_cut << " spaces cut after cut_area function\n";
+  // std::cout << num_cut << " spaces cut after cut_area function\n";
   
 }//end function
 
