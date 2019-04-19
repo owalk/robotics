@@ -1,0 +1,86 @@
+//////////////////////////////////////////////////////////////
+//
+// Programmer: Victoria Albanese
+// Date: November 2, 2017
+// Filename: map_class.hpp
+//
+// Description: This declares a class where 
+//
+//////////////////////////////////////////////////////////////
+
+#ifndef MAP_CLASS_HPP
+#define MAP_CLASS_HPP
+
+#include <vector>
+
+#include "ros/ros.h"
+#include "nav_msgs/OccupancyGrid.h"
+#include "nav_msgs/MapMetaData.h"
+#include "std_msgs/Header.h"
+
+
+
+#define L0 0.2
+#define L_OCC 1.0
+#define L_FREE 0.0
+
+#define MAP_HEIGHT 150		// 150 pixels tall (15m)
+#define MAP_WIDTH 600		// 600 pixels wide (60m)
+#define MAP_RESOLUTION 0.1	// each pixel represents 0.1m = 10cm
+
+using std::vector;
+
+class MyMap 
+{
+private:
+  // make 2 instances of the map.
+  vector< vector<float> > map;
+  
+  ros::Publisher publisher;
+  struct coord {
+    int x;
+    int y;
+  };
+
+public:
+  MyMap();
+  MyMap(ros::NodeHandle handle, int which_map);
+  vector< vector<float> > get_map() { return this->map; }
+  void set_map(vector< vector<float> > new_map) { this->map = new_map; }
+  
+
+  /**
+     looks in map for last column of unmowed stuff     
+   */
+  int find_unmowed();
+
+  /**
+     ADD 0'S to map_covered where map_covered not 1 and where map is less than 0.5
+   */
+  void add_uncut(MyMap main_map);
+
+  /**
+     marks map_covered with a 1 where ever lawnmower robot has been.
+   */
+  void mark_as_mowed(int x, int y);
+		
+  void publish(int which_map);
+  float convert_to_probability(float log_odds);
+
+  void draw_line(int x1, int y1, int x2, int y2);
+  void draw_point(int x, int y, bool is_occupied);
+
+  void cut_area(int x, int y, MyMap otherMap);
+
+  void compare_results();
+  
+  float update_log_odds(float old_odds, bool is_occupied);
+
+  /* pass in robot current x and y, return destination x, y
+using a* algorithm*/
+  coord a_star(int x, int y)
+};
+
+#endif // MAP_CLASS_HPP
+
+//////////////////////////////////////////////////////////////
