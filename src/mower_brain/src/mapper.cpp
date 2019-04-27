@@ -41,6 +41,12 @@ int main(int argc, char **argv)
 
 	// start timer
 	gettimeofday(&t1, NULL);
+
+	// remove later and have set by function
+	robot.coord_goal.x = 350;
+	robot.coord_goal.y = 80;
+	///////////////
+
 	
 	while(ros::ok()) 
 	{	         
@@ -54,7 +60,7 @@ int main(int argc, char **argv)
 
 	  int i;
 	  int t = 15;
-
+	  /* old code
 	  int minutes = 2;
 	  for(i=0; i<t; i++){
 
@@ -67,6 +73,20 @@ int main(int argc, char **argv)
 	    }
 	  }
 	  mower_map.compare_results();
+	  */
+
+	  // change state by one to the left
+	  // -1 to the x position.
+
+	  // if goal reached, updated goal
+	  if( robot_x != robot.coord_goal.x &&
+	      robot_y != robot.coord_goal.y)
+	    {
+	      // go to goal
+	      robot.seek_goal(); 
+	    }
+
+	  
 	  
 	  // write out 1's to second map where cut
 	  mower_map.cut_area(robot_x, robot_y, main_map);

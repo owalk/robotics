@@ -21,9 +21,17 @@
 
 #define SCALE 10.0
 
+// used to navigate to this position
+struct Coordinate_goal {
+  int x;
+  int y;
+};
+
 class Robot 
 {
-private: 
+private:
+
+  //current robots position
   float x_position;
   float y_position;
   tf::Quaternion quaternion;
@@ -41,7 +49,9 @@ private:
 public:
   Robot();
   Robot(ros::NodeHandle handle);
-	
+
+  Coordinate_goal coord_goal;
+  
   float get_x_position_relative() { return (30.0 + this->x_position) * SCALE; }
   float get_y_position_relative() { return (7.5 + this->y_position) * SCALE; }
   float get_angle() { return this->quaternion.getAngle(); }
@@ -54,7 +64,15 @@ public:
 		
   void explore();
 
-  // written by oliver
+  /**
+     this moves to robots position over by a
+     single cell in one of the cardinal directions
+
+     new_state: can be passed 'l','r','u','d'
+     for left, right, up, down.
+   **/
+  void seek_goal();
+
   void floor_cover(float dist);
   void up_down();
   void tilt();
@@ -69,6 +87,8 @@ public:
   
   void laser_callback(const sensor_msgs::LaserScan::ConstPtr& msg);
   void position_callback(const nav_msgs::Odometry::ConstPtr& msg);
+
+
 };
 
 #endif // ROBOT_CLASS_HPP

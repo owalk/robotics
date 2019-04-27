@@ -145,7 +145,7 @@ void MyMap::cut_area(int x, int y, MyMap otherMap)
     }
   }
 
-  std::cout << num_cut << " spaces cut after cut_area function\n";
+  //std::cout << num_cut << " spaces cut after cut_area function\n";
   
 }//end function
 

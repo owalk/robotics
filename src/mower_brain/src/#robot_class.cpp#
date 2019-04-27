@@ -54,7 +54,8 @@ void Robot::seek_goal(){
   int x = get_x_position_relative();
   int y = get_y_position_relative();
 
-  msg.angular.z = 0; //keep it from twisting hopefully
+  //twist back to correct angle here
+  //  msg.angular.z = 0; //keep it from twisting hopefully
   
   if(x < coord_goal.x)
     msg.linear.x = 3; // left
@@ -202,7 +203,7 @@ void Robot::position_callback(const nav_msgs::Odometry::ConstPtr& msg)
 {
 	this->x_position = msg->pose.pose.position.x;
 	this->y_position = msg->pose.pose.position.y;
-
+	
 	tf::Quaternion new_q(
 		msg->pose.pose.orientation.x, 
 		msg->pose.pose.orientation.y,
