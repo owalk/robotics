@@ -51,9 +51,14 @@ public:
   Robot(ros::NodeHandle handle);
 
   Coordinate_goal coord_goal;
+
+  float scale_x(float x){return (30.0 + x) * SCALE;}
+  float scale_y(float y){return (7.5 + y) * SCALE;}
   
-  float get_x_position_relative() { return (30.0 + this->x_position) * SCALE; }
-  float get_y_position_relative() { return (7.5 + this->y_position) * SCALE; }
+  float get_x_position_relative() { return scale_x(this->x_position); }
+  float get_y_position_relative() { return scale_y(this->y_position); }
+  
+  
   float get_angle() { return this->quaternion.getAngle(); }
 		
   float get_west() { return this->west; }

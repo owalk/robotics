@@ -51,27 +51,33 @@ Robot::Robot(ros::NodeHandle handle)
 void Robot::seek_goal(){ 
 
   geometry_msgs::Twist msg;
-  int x = get_x_position_relative();
-  int y = get_y_position_relative();
+  int x = (int)get_x_position_relative();
+  int y = (int)get_y_position_relative();
 
-  msg.angular.z = 0; //keep it from twisting hopefully
+  //twist back to correct angle here
+  //  msg.angular.z = 0; //keep it from twisting hopefully
   
-  if(x < coord_goal.x)
-    msg.linear.x = 3; // left
-  if(x > coord_goal.x)
-    msg.linear.x = -3;  // right
-  
-  if(x < coord_goal.y){
-    msg.linear.y = 3; // down
-    std::cout << "going up?\n";
+  if(x > coord_goal.x ){
+    msg.linear.x = -3; // left
+    std::cout << "going left to goal " << coord_goal.x << "\n";
   }
-  if(x > coord_goal.y){
-    msg.linear.y = -3;  // up
-    std::cout << "going down?\n";
+  if(x < coord_goal.x){
+    msg.linear.x = 3;  // right
+    std::cout << "going right to goal " << coord_goal.x << "\n";
+  }
+  if(y > coord_goal.y){
+    msg.linear.y = -3; // down
+    std::cout << "going down to goal " << coord_goal.y << "\n";
+  }
+  if(y < coord_goal.y){
+    msg.linear.y = 3;  // up
+    std::cout << "going up to goal " << coord_goal.y << "\n";
       }
   
-  if(x == coord_goal.x)
+  if(x == coord_goal.x){
     msg.linear.x = 0;  // stop
+    std::cout << "goal x reached!\n";
+  }
   if(y == coord_goal.y)
     msg.linear.y = 0; // stop
 
@@ -202,7 +208,7 @@ void Robot::position_callback(const nav_msgs::Odometry::ConstPtr& msg)
 {
 	this->x_position = msg->pose.pose.position.x;
 	this->y_position = msg->pose.pose.position.y;
-
+	
 	tf::Quaternion new_q(
 		msg->pose.pose.orientation.x, 
 		msg->pose.pose.orientation.y,
