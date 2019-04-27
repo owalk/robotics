@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	{	         
 	  robot_x = robot.get_x_position_relative();
 	  robot_y = robot.get_y_position_relative();
-	  std::cout << "current x is: "<< robot_x << "\n";
+	 
 	  //stop timer 2
 	  gettimeofday(&t2, NULL);
 	  

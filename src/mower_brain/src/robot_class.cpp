@@ -53,38 +53,35 @@ void Robot::seek_goal(){
   geometry_msgs::Twist msg;
   int x = (int)get_x_position_relative();
   int y = (int)get_y_position_relative();
-
-  //twist back to correct angle here
-  //  msg.angular.z = 0; //keep it from twisting hopefully
   
-  if(x > coord_goal.x ){
+  if(x > coord_goal.x )
     msg.linear.x = -3; // left
-    std::cout << "going left to goal " << coord_goal.x << "\n";
-  }
-  if(x < coord_goal.x){
+  if(x < coord_goal.x)
     msg.linear.x = 3;  // right
-    std::cout << "going right to goal " << coord_goal.x << "\n";
-  }
-  if(y > coord_goal.y){
-    msg.linear.y = -3; // down
-    std::cout << "going down to goal " << coord_goal.y << "\n";
-  }
-  if(y < coord_goal.y){
+
+  if(y < coord_goal.y)
     msg.linear.y = 3;  // up
-    std::cout << "going up to goal " << coord_goal.y << "\n";
-      }
+  if(y > coord_goal.y)
+    msg.linear.y = -3; // down
+      
   
-  if(x == coord_goal.x){
+  if(x == coord_goal.x)
     msg.linear.x = 0;  // stop
-    std::cout << "goal x reached!\n";
-  }
   if(y == coord_goal.y)
     msg.linear.y = 0; // stop
+  
 
-  std::cout << "robot_x is: " << x << std::endl;
-  std::cout << "robot_y is: " << y << std::endl;
-  this->publisher.publish(msg);
- 
+  // get the yaw to check robot rotation
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+
+  if( yaw < 0 ){ // if pointing down
+    msg.angular.z = 0.2; // twist up
+    else // if pointing up
+    msg.angular.z = -0.2; // twist down
+  
+  
+  this->publisher.publish(msg); 
 
 }
 
