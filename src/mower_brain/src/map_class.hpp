@@ -72,6 +72,38 @@ public:
   float update_log_odds(float old_odds, bool is_occupied);
 };
 
+class Coordinate {
+ public:
+    int x;
+    int y;
+
+    Coordinate() : x(0), y(0) {}
+    Coordinate(int nX, int nY) : x(nX), y(nY) {}
+    Coordinate(const Coordinate& other) : x(other.x), y(other.y) {}
+
+    ~Coordinate() {}
+
+    bool operator==(const Coordinate& rval) const { return (x == rval.x && y == rval.y); }
+    bool operator!=(const Coordinate& rval) const { return (x != rval.x || y != rval.y); }
+
+    Coordinate operator=(const Coordinate& rval) { x = rval.x; y = rval.y; return *this; }
+};
+
+// Make the Coordinate class hashable for STL objects
+namespace std
+{
+    template<>
+    struct hash<Coordinate> {
+        size_t operator()(const Coordinate & obj) const {
+            // hash using Cantor's Enumeration of Pairs
+            return hash<int>()(((obj.x + obj.y)*(obj.x + obj.y + 1)/2) + obj.y);
+        }
+    };
+}
+
+
+
+
 #endif // MAP_CLASS_HPP
 
 //////////////////////////////////////////////////////////////

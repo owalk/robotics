@@ -45,6 +45,8 @@ robot_class.hpp
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/robot_class.hpp
 map_class.hpp
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/map_class.hpp
+search.hpp
+/home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.hpp
 
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/robot_class.cpp
 robot_class.hpp
@@ -65,6 +67,28 @@ sensor_msgs/LaserScan.h
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/sensor_msgs/LaserScan.h
 tf/transform_datatypes.h
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/tf/transform_datatypes.h
+
+/home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.cpp
+unordered_set
+-
+queue
+-
+list
+-
+utility
+-
+iostream
+-
+vector
+-
+search.hpp
+/home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.hpp
+
+/home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.hpp
+list
+-
+map_class.hpp
+/home/osboxes/Desktop/robotics_ws/src/mower_brain/src/map_class.hpp
 
 /opt/ros/kinetic/include/geometry_msgs/Point.h
 string

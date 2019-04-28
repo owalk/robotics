@@ -112,6 +112,8 @@ catkin_package(
 ## Build ##
 ###########
 
+add_compile_options(-std=c++11)
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
@@ -134,6 +136,7 @@ add_executable(map
 	src/map_class.cpp
 	src/robot_class.cpp
 	src/mapper.cpp
+	src/search.cpp
 )
 
 ## Add cmake target dependencies of the executable

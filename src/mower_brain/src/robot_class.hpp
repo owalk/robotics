@@ -58,7 +58,9 @@ public:
   float get_x_position_relative() { return scale_x(this->x_position); }
   float get_y_position_relative() { return scale_y(this->y_position); }
   
-  
+  float get_x_position_raw() { return 30.0 + this->x_position; }
+  float get_y_position_raw() { return 7.5 + this->y_position; }
+
   float get_angle() { return this->quaternion.getAngle(); }
 		
   float get_west() { return this->west; }

@@ -1,0 +1,8 @@
+
+devel/lib/map_publisher/map_publisher
+
+devel/lib/mower_brain/map
+
+*.o
+
+*~

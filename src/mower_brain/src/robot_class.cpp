@@ -77,7 +77,7 @@ void Robot::seek_goal(){
 
   if( yaw < 0 ){ // if pointing down
     msg.angular.z = 0.2; // twist up
-    else // if pointing up
+  } else // if pointing up
     msg.angular.z = -0.2; // twist down
   
   

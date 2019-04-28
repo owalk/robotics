@@ -561,6 +561,33 @@ src/robot_class.cpp.s:
 	cd /home/osboxes/Desktop/robotics_ws/build && $(MAKE) -f mower_brain/CMakeFiles/map.dir/build.make mower_brain/CMakeFiles/map.dir/src/robot_class.cpp.s
 .PHONY : src/robot_class.cpp.s
 
+src/search.o: src/search.cpp.o
+
+.PHONY : src/search.o
+
+# target to build an object file
+src/search.cpp.o:
+	cd /home/osboxes/Desktop/robotics_ws/build && $(MAKE) -f mower_brain/CMakeFiles/map.dir/build.make mower_brain/CMakeFiles/map.dir/src/search.cpp.o
+.PHONY : src/search.cpp.o
+
+src/search.i: src/search.cpp.i
+
+.PHONY : src/search.i
+
+# target to preprocess a source file
+src/search.cpp.i:
+	cd /home/osboxes/Desktop/robotics_ws/build && $(MAKE) -f mower_brain/CMakeFiles/map.dir/build.make mower_brain/CMakeFiles/map.dir/src/search.cpp.i
+.PHONY : src/search.cpp.i
+
+src/search.s: src/search.cpp.s
+
+.PHONY : src/search.s
+
+# target to generate assembly for a file
+src/search.cpp.s:
+	cd /home/osboxes/Desktop/robotics_ws/build && $(MAKE) -f mower_brain/CMakeFiles/map.dir/build.make mower_brain/CMakeFiles/map.dir/src/search.cpp.s
+.PHONY : src/search.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -604,6 +631,9 @@ help:
 	@echo "... src/robot_class.o"
 	@echo "... src/robot_class.i"
 	@echo "... src/robot_class.s"
+	@echo "... src/search.o"
+	@echo "... src/search.i"
+	@echo "... src/search.s"
 .PHONY : help
 
 
