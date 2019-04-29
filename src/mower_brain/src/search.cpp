@@ -37,14 +37,15 @@ std::list<Coordinate> breadth_first_search(Coordinate start, Coordinate goal, My
         frontier.pop();
         if (nextState.coord == goal) {
             std::cout << "Found goal state!" << std::endl;
+            nextState.coord_list.push_back(nextState.coord);
             return nextState.coord_list;
         }
         if (explored_set.find(nextState.coord) == explored_set.end()) {
             explored_set.insert(nextState.coord);
             // push things into the queue
             // std::cout << "putting things in the queue" << std::endl;
-            for (int i = -1; i < 2; i += 2) {
-                for (int j = -1; j < 2; j += 2) {
+            for (int i = -1; i <= 1; i += 2) {
+                for (int j = -1; j <= 1; j += 2) {
                     // std::cout << "checking (" << i + nextState.coord.x << ", " << j + nextState.coord.x << ")" << std::endl;
                     if (i + nextState.coord.x >= 0 && j + nextState.coord.y >= 0 && i + nextState.coord.x < wall_map.size() && j + nextState.coord.y < wall_map[i].size()  
                         && wall_map[i + nextState.coord.x][j + nextState.coord.y] <= 0.5) {

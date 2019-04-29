@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     robot.coord_goal.y = 70;
     std::cout << "Beginning BFS" << std::endl;
     auto thing = breadth_first_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-                         Coordinate(robot.coord_goal.x, robot.coord_goal.y),
+                         Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
                          mower_map,
                          main_map);
 
