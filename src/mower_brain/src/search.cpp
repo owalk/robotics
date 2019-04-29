@@ -30,7 +30,6 @@ std::list<Coordinate> breadth_first_search(Coordinate start, Coordinate goal, My
     State nextState;
     nextState.coord = start;
     frontier.push(nextState);
-    std::cout << "beginning loop" << std::endl;
     while (!frontier.empty()) {
         // std::cout << "at top of loop" << std::endl;
         nextState = frontier.front();
@@ -40,24 +39,36 @@ std::list<Coordinate> breadth_first_search(Coordinate start, Coordinate goal, My
             nextState.coord_list.push_back(nextState.coord);
             return nextState.coord_list;
         }
-        if (explored_set.find(nextState.coord) == explored_set.end()) {
+        if (!explored_set.count(nextState.coord)) { //explored_set.find(nextState.coord) == explored_set.end()
             explored_set.insert(nextState.coord);
-            // push things into the queue
-            // std::cout << "putting things in the queue" << std::endl;
+
             for (int i = -1; i <= 1; i += 2) {
-                for (int j = -1; j <= 1; j += 2) {
-                    // std::cout << "checking (" << i + nextState.coord.x << ", " << j + nextState.coord.x << ")" << std::endl;
-                    if (i + nextState.coord.x >= 0 && j + nextState.coord.y >= 0 && i + nextState.coord.x < wall_map.size() && j + nextState.coord.y < wall_map[i].size()  
-                        && wall_map[i + nextState.coord.x][j + nextState.coord.y] <= 0.5) {
-                        // not a wall, add it to the possibilities
-                        nextState.coord_list.push_back(nextState.coord);
-                        frontier.push(State(Coordinate(i + nextState.coord.x, j + nextState.coord.y), nextState.coord_list));
-                    }
+                if (i + nextState.coord.x >= 0 && i + nextState.coord.x < wall_map.size() && wall_map[i + nextState.coord.x][nextState.coord.y] <= 0.5) {
+                    // not a wall, add it to the possibilities
+                    // if (nextState.coord_list.back() == nextState.coord) {
+                    //     std::cout << nextState.coord_list.back() << " Is equal to " << nextState.coord << std::endl;
+                    // }
+                    nextState.coord_list.push_back(nextState.coord);
+                    frontier.push(State(Coordinate(i + nextState.coord.x, nextState.coord.y), nextState.coord_list));
+                    nextState.coord_list.pop_back();
+                }
+            }
+            for (int j = -1; j <= 1; j += 2) {
+                if (j + nextState.coord.y >= 0 && j + nextState.coord.y < wall_map[nextState.coord.x].size() && wall_map[nextState.coord.x][j + nextState.coord.y] <= 0.5) {
+                    // not a wall, add it to the possibilities
+                    
+                    // if (nextState.coord_list.back() == nextState.coord) {
+                    //     std::cout << nextState.coord_list.back() << " Is equal to " << nextState.coord << std::endl;
+                    // }
+
+                    nextState.coord_list.push_back(nextState.coord);
+                    frontier.push(State(Coordinate(nextState.coord.x, j + nextState.coord.y), nextState.coord_list));
+                    nextState.coord_list.pop_back();
                 }
             }
         }
     }
-    std::cout << "Returning...." << std::endl;
+    std::cout << "Could Not Find Goal..." << std::endl;
     return nextState.coord_list;
     /*
     frontier, explored_set = util.Queue(), set()

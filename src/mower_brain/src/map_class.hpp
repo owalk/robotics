@@ -12,7 +12,7 @@
 #define MAP_CLASS_HPP
 
 #include <vector>
-
+#include <iostream>
 #include "ros/ros.h"
 #include "nav_msgs/OccupancyGrid.h"
 #include "nav_msgs/MapMetaData.h"
@@ -85,6 +85,8 @@ class Coordinate {
 
     bool operator==(const Coordinate& rval) const { return (x == rval.x && y == rval.y); }
     bool operator!=(const Coordinate& rval) const { return (x != rval.x || y != rval.y); }
+
+    friend std::ostream& operator<<(std::ostream& os, const Coordinate& coord);
 
     Coordinate operator=(const Coordinate& rval) { x = rval.x; y = rval.y; return *this; }
 };

@@ -316,3 +316,9 @@ void MyMap::mark_as_mowed(int x, int y){
   map[x][y] = 1;
 }
 //////////////////////////////////////////////////////////////
+
+std::ostream& operator<<(std::ostream& os, const Coordinate& coord)
+{
+    os << '(' << coord.x << ", " << coord.y << ')';
+    return os;
+}
