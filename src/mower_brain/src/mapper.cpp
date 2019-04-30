@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     int robot_x, robot_y;
     int x, y;
 
-
     // code from stack overflow on timers
     struct timeval t1, t2;
     double elapsedTime;
@@ -43,60 +42,67 @@ int main(int argc, char **argv)
     // start timer
     gettimeofday(&t1, NULL);
 
-    // remove later and have set by function
-    robot.coord_goal.x = 120;
-    robot.coord_goal.y = 70;
-    std::cout << "Beginning BFS" << std::endl;
-    auto thing = breadth_first_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-                         Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
-                         mower_map,
-                         main_map);
+    // initial coordinates to start the search
+    robot.coord_goal.x = 190;
+    robot.coord_goal.y = 50;
 
-    for (auto item : thing) {
-        std::cout << "( " << item.x << ", " << item.y << ") ; ";
+    std::cout << "Beginning BFS" << std::endl;
+    auto coord_goal_list = breadth_first_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+				      Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
+				      mower_map,
+				      main_map);
+
+    for (auto item : coord_goal_list) {
+      std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
     ///////////////
     std::cout << "Finished BFS" << std::endl;
+
+    robot.coord_goal.x = coord_goal_list.front().x;
+    robot.coord_goal.y = coord_goal_list.front().y;
+
     
     while(ros::ok()) 
-    {	         
-      robot_x = robot.get_x_position_relative();
-      robot_y = robot.get_y_position_relative();
+    {
+      int x_raw = (int)robot.get_x_position_relative()/10;
+      int y_raw = (int)robot.get_y_position_relative()/10;
      
       //stop timer 2
       gettimeofday(&t2, NULL);
       
-      elapsedTime = (t2.tv_sec - t1.tv_sec);
+      elapsedTime = (t2.tv_sec - t1.tv_sec);    
+          
 
-      int i;
-      int t = 15;
-      /* old code
-      int minutes = 2;
-      for(i=0; i<t; i++){
-
-        if(elapsedTime >= 60*i*minutes && elapsedTime < (minutes*60*i)+240) // 6 - 9 minutes
-          robot.floor_cover(1.7+(i*0.5));
-
-        if(elapsedTime == (i*minutes*60)){
-          std::cout << "Time passed:  "<< i*minutes <<"minute\n";
-          mower_map.compare_results();
-        }
+      if( x_raw != robot.coord_goal.x &&
+	  y_raw != robot.coord_goal.y){
+	// go to goal
+	std::cout << "search robot seeking goal (" << robot.coord_goal.x <<","<< robot.coord_goal.y<< ")\n";
+	std::cout << "search robot currently at (" << x_raw <<","<< y_raw<< ")\n\n";
+	robot.seek_goal(); 
       }
-      mower_map.compare_results();
-      */
+      else{ // set goal
+	
+	// follow each point from search function to the goal
+	std::cout << "robot reached (" <<x_raw<<
+	  ","<<y_raw<<")\n";
+	robot.stop();
+	coord_goal_list.pop_front();
+	robot.coord_goal.x = coord_goal_list.front().x;
+	robot.coord_goal.y = coord_goal_list.front().y;
+	std::cout << "robot now seeking (" <<robot.coord_goal.x<<
+	  ","<<robot.coord_goal.y<<")\n\n";
+	      
+	
+      }
+      /////////////////////////////////////////////
+	
+      if(coord_goal_list.front().x == 0 &&
+	 coord_goal_list.front().y == 0){
+	// end of coordinate list has been hit. end program
+	return 0;
+	}
 
-      // change state by one to the left
-      // -1 to the x position.
-
-      // if goal reached, updated goal
-      if( robot_x != robot.coord_goal.x &&
-          robot_y != robot.coord_goal.y)
-        {
-          // go to goal
-          robot.seek_goal(); 
-        }
-
-      
+           
       
       // write out 1's to second map where cut
       mower_map.cut_area(robot_x, robot_y, main_map);
@@ -104,14 +110,13 @@ int main(int argc, char **argv)
       // write out 0's where uncut but known as part of the map
       mower_map.add_uncut(main_map);
 
-      // end of timer message
-      if( elapsedTime  > t*60*4){ // t * 4 minutes
-        std::cout << "Time passed:  "<< i*4 <<"minute\n";
-        std::cout << "Ending Program!\n";
-        return 0; // end the node
-      }
-      
-      
+
+      //down here we can do a end of program condition to return 0 from
+      // if something
+      // return 0;
+
+      robot_x = robot.get_x_position_relative();
+      robot_y = robot.get_y_position_relative();
       
       main_map.draw_point(robot_x, robot_y, false);
             

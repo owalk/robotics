@@ -84,8 +84,7 @@ public:
   void up_down();
   void tilt();
 
-  void plus_x();
-  void minus_x();
+  void stop();
   
   void right_wall_follow();
   void avoid_obstacle();

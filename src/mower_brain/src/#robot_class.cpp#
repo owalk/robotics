@@ -51,8 +51,8 @@ Robot::Robot(ros::NodeHandle handle)
 void Robot::seek_goal(){ 
 
   geometry_msgs::Twist msg;
-  int x = (int)get_x_position_relative()/10;
-  int y = (int)get_y_position_relative()/10;
+  int x = (int)get_x_position_raw();
+  int y = (int)get_y_position_raw();
   
   if(x > coord_goal.x )
     msg.linear.x = -3; // left
@@ -116,10 +116,6 @@ void Robot::floor_cover(float dist){
     else if (this->northeast > dist+0.5 || this->north > dist+0.5) // if past right bound, go left
       this->drift_left();
   }
-
-  double roll, pitch, yaw;
-  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
-  std::cout << "robot yaw: " << yaw << "\n";
 }
 
 // Written by oliver, function todrive over a spot on the map
@@ -133,11 +129,9 @@ void Robot::tilt(){
 void Robot::stop(){
   geometry_msgs::Twist msg;  
   msg.linear.x = 0;
-  msg.linear.y = 0; 
+  msg.linear.y = 0;
   this->publisher.publish(msg);
 }
-
-
 
 // RIGHT WALL FOLLOW FUNCTION
 // publishes a twist message enabling the robot to right wall follow
