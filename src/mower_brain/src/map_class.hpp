@@ -41,7 +41,7 @@ private:
 public:
   MyMap();
   MyMap(ros::NodeHandle handle, int which_map);
-  vector< vector<float> > get_map() { return this->map; }
+  vector< vector<float> > get_map() const { return map; }
   void set_map(vector< vector<float> > new_map) { this->map = new_map; }
 
   /**
@@ -102,8 +102,6 @@ namespace std
         }
     };
 }
-
-
 
 
 #endif // MAP_CLASS_HPP

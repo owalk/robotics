@@ -55,9 +55,19 @@ int main(int argc, char **argv)
     for (auto item : thing) {
         std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
-    ///////////////
     std::cout << "Finished BFS" << std::endl;
     
+    // std::cout << "Beginning UCS" << std::endl;
+    // auto thing2 = uniform_cost_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+    //                      Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
+    //                      mower_map,
+    //                      main_map);
+
+    // for (auto item : thing2) {
+    //     std::cout << "( " << item.x << ", " << item.y << ") ; ";
+    // }
+    // std::cout << "Finished UCS" << std::endl;
+
     while(ros::ok()) 
     {	         
       robot_x = robot.get_x_position_relative();
