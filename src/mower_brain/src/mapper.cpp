@@ -62,22 +62,36 @@ int main(int argc, char **argv)
     std::cout << "Finished BFS" << std::endl;
     
     std::cout << "Beginning UCS" << std::endl;
-    auto thing2 = search.uniform_cost_search(
+    auto temp_list = search.uniform_cost_search(
         Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
 
-    for (auto item : thing2) {
+    for (auto item : temp_list) {
         std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
     std::cout << "Finished UCS" << std::endl;
 
-    std::cout << "Beginning A*" << std::endl;
-    auto thing3 = search.a_star_search(
+    temp_list.clear();
+
+    std::cout << "Beginning A* with null_heuristic" << std::endl;
+    temp_list = search.a_star_search(
         Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
 
-    for (auto item : thing3) {
+    for (auto item : temp_list) {
         std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
     std::cout << "Finished A*" << std::endl;
+
+    temp_list.clear();
+
+    std::cout << "Beginning A* with manhattan_distance_heuristic" << std::endl;
+    temp_list = search.a_star_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+        search.manhattan_distance_heuristic);
+
+    for (auto item : temp_list) {
+        std::cout << "( " << item.x << ", " << item.y << ") ; ";
+    }
+    std::cout << "Finished A* with manhattan_distance_heuristic" << std::endl;
 
     robot.coord_goal.x = coord_goal_list.front().x;
     robot.coord_goal.y = coord_goal_list.front().y;

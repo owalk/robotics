@@ -74,6 +74,10 @@ class Search_Problem {
         return 0;
     }
 
+    static int manhattan_distance_heuristic(const State& state, const State& goal, const Map_t& mower_map, const Map_t& wall_map) {
+        return (abs(state.coord.x - goal.coord.x) + abs(state.coord.y - goal.coord.y));
+    }
+
     // Search Algorithms
     std::list<Coordinate> breadth_first_search(const Coordinate& start);
     std::list<Coordinate> uniform_cost_search(const Coordinate& start);
