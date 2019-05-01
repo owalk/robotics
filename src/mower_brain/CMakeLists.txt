@@ -138,6 +138,8 @@ add_executable(map
 	src/mapper.cpp
 	src/search.cpp
 )
+#	src/stable_priority_queue.cpp
+#)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

@@ -247,6 +247,7 @@ mower_brain/CMakeFiles/map.dir/src/robot_class.cpp.o: /opt/ros/kinetic/include/x
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/map_class.hpp
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.cpp
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/search.hpp
+mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/stable_priority_queue.hpp
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Point.h
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Pose.h
 mower_brain/CMakeFiles/map.dir/src/search.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Quaternion.h

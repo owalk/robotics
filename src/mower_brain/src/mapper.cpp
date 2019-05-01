@@ -17,7 +17,8 @@
 #include "robot_class.hpp"
 #include "map_class.hpp"
 #include "search.hpp"
-    
+
+   
 int main(int argc, char **argv)
 {
       // initialize node and create the node handle
@@ -47,30 +48,31 @@ int main(int argc, char **argv)
     robot.coord_goal.y = 50;
 
     std::cout << "Beginning BFS" << std::endl;
-    auto coord_goal_list = breadth_first_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-				      Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
-				      mower_map,
-				      main_map);
+    auto coord_goal_list = breadth_first_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+        Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
+        mower_map,
+        main_map);
 
     for (auto item : coord_goal_list) {
       std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
     std::cout << "Finished BFS" << std::endl;
+    
+    std::cout << "Beginning UCS" << std::endl;
+    auto thing2 = uniform_cost_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+        Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
+        mower_map,
+        main_map);
+
+    for (auto item : thing2) {
+        std::cout << "( " << item.x << ", " << item.y << ") ; ";
+    }
+    std::cout << "Finished UCS" << std::endl;
 
     robot.coord_goal.x = coord_goal_list.front().x;
     robot.coord_goal.y = coord_goal_list.front().y;
-
-    
-    // std::cout << "Beginning UCS" << std::endl;
-    // auto thing2 = uniform_cost_search(Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-    //                      Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
-    //                      mower_map,
-    //                      main_map);
-
-    // for (auto item : thing2) {
-    //     std::cout << "( " << item.x << ", " << item.y << ") ; ";
-    // }
-    // std::cout << "Finished UCS" << std::endl;
 
     while(ros::ok()) 
     {
@@ -84,33 +86,33 @@ int main(int argc, char **argv)
           
 
       if( x_raw != robot.coord_goal.x &&
-	  y_raw != robot.coord_goal.y){
-	// go to goal
-	std::cout << "search robot seeking goal (" << robot.coord_goal.x <<","<< robot.coord_goal.y<< ")\n";
-	std::cout << "search robot currently at (" << x_raw <<","<< y_raw<< ")\n\n";
-	robot.seek_goal(); 
+      y_raw != robot.coord_goal.y){
+    // go to goal
+    std::cout << "search robot seeking goal (" << robot.coord_goal.x <<","<< robot.coord_goal.y<< ")\n";
+    std::cout << "search robot currently at (" << x_raw <<","<< y_raw<< ")\n\n";
+    robot.seek_goal(); 
       }
       else{ // set goal
-	
-	// follow each point from search function to the goal
-	std::cout << "robot reached (" <<x_raw<<
-	  ","<<y_raw<<")\n";
-	robot.stop();
-	coord_goal_list.pop_front();
-	robot.coord_goal.x = coord_goal_list.front().x;
-	robot.coord_goal.y = coord_goal_list.front().y;
-	std::cout << "robot now seeking (" <<robot.coord_goal.x<<
-	  ","<<robot.coord_goal.y<<")\n\n";
-	      
-	
+    
+    // follow each point from search function to the goal
+    std::cout << "robot reached (" <<x_raw<<
+      ","<<y_raw<<")\n";
+    robot.stop();
+    coord_goal_list.pop_front();
+    robot.coord_goal.x = coord_goal_list.front().x;
+    robot.coord_goal.y = coord_goal_list.front().y;
+    std::cout << "robot now seeking (" <<robot.coord_goal.x<<
+      ","<<robot.coord_goal.y<<")\n\n";
+          
+    
       }
       /////////////////////////////////////////////
-	
+    
       if(coord_goal_list.front().x == 0 &&
-	 coord_goal_list.front().y == 0){
-	// end of coordinate list has been hit. end program
-	return 0;
-	}
+     coord_goal_list.front().y == 0){
+    // end of coordinate list has been hit. end program
+    return 0;
+    }
 
            
       
