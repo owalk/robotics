@@ -46,13 +46,15 @@ int main(int argc, char **argv)
     // initial coordinates to start the search
     robot.coord_goal.x = 190;
     robot.coord_goal.y = 50;
+    std::cout << "Initializing Search Problem" << std::endl;
+
+    State goal_state(State(Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0)));
+    Search_Problem search(goal_state, &mower_map, &main_map);
 
     std::cout << "Beginning BFS" << std::endl;
-    auto coord_goal_list = breadth_first_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-        Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
-        mower_map,
-        main_map);
+    auto coord_goal_list = search.breadth_first_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
+        
 
     for (auto item : coord_goal_list) {
       std::cout << "( " << item.x << ", " << item.y << ") ; ";
@@ -60,16 +62,22 @@ int main(int argc, char **argv)
     std::cout << "Finished BFS" << std::endl;
     
     std::cout << "Beginning UCS" << std::endl;
-    auto thing2 = uniform_cost_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-        Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0),
-        mower_map,
-        main_map);
+    auto thing2 = search.uniform_cost_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
 
     for (auto item : thing2) {
         std::cout << "( " << item.x << ", " << item.y << ") ; ";
     }
     std::cout << "Finished UCS" << std::endl;
+
+    std::cout << "Beginning A*" << std::endl;
+    auto thing3 = search.a_star_search(
+        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
+
+    for (auto item : thing3) {
+        std::cout << "( " << item.x << ", " << item.y << ") ; ";
+    }
+    std::cout << "Finished A*" << std::endl;
 
     robot.coord_goal.x = coord_goal_list.front().x;
     robot.coord_goal.y = coord_goal_list.front().y;

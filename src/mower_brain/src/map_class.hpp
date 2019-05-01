@@ -29,20 +29,21 @@
 #define MAP_RESOLUTION 0.1	// each pixel represents 0.1m = 10cm
 
 using std::vector;
+typedef vector< vector<float> > Map_t;
 
 class MyMap 
 {
 private:
   // make 2 instances of the map.
-  vector< vector<float> > map;
+  Map_t map;
   
   ros::Publisher publisher;
 
 public:
   MyMap();
   MyMap(ros::NodeHandle handle, int which_map);
-  vector< vector<float> > get_map() const { return map; }
-  void set_map(vector< vector<float> > new_map) { this->map = new_map; }
+  Map_t get_map() const { return map; }
+  void set_map(Map_t new_map) { this->map = new_map; }
 
   /**
      looks in map for last column of unmowed stuff     

@@ -93,6 +93,8 @@ list
 -
 map_class.hpp
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/map_class.hpp
+algorithm
+-
 
 /home/osboxes/Desktop/robotics_ws/src/mower_brain/src/stable_priority_queue.hpp
 queue
