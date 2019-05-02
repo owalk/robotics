@@ -53,37 +53,20 @@ void Robot::seek_goal(){
   geometry_msgs::Twist msg;
   int x = (int)get_x_position_relative()/10;
   int y = (int)get_y_position_relative()/10;
-  /*
-  if(x > coord_goal.x )
-    msg.linear.x = -3; // left
-  if(x < coord_goal.x)
-    msg.linear.x = 3;  // right
 
-  if(y < coord_goal.y)
-    msg.linear.y = 3;  // up
-  if(y > coord_goal.y)
-    msg.linear.y = -3; // down
+  
+  if(x > coord_goal.x )
+    move_left();
+  if(x < coord_goal.x)
+    move_right();
+
+  if(y < coord_goal.y && x == coord_goal.x )
+    move_up();
+  
+  if(y > coord_goal.y && x == coord_goal.x)
+    move_down();
       
   
-  if(x == coord_goal.x)
-    msg.linear.x = 0;  // stop
-  if(y == coord_goal.y)
-    msg.linear.y = 0; // stop
-  */
-
-  // get the yaw to check robot rotation
-  double roll, pitch, yaw;
-  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
-
-  if( yaw < 0 ){ // if pointing down
-    msg.angular.z = 0.2; // twist up
-  } else // if pointing up
-    msg.angular.z = 0.2; // twist down
-
-
-  
-  this->publisher.publish(msg); 
-
 }
 
 int Robot::move_up(){
@@ -209,6 +192,13 @@ int Robot::turn_left(){
   return ret;
 }
 
+void Robot::stop(){
+  geometry_msgs::Twist msg;  
+  msg.linear.x = 0;
+  msg.linear.y = 0; 
+  this->publisher.publish(msg);
+}
+
 void Robot::explore() 
 {
 
@@ -254,12 +244,6 @@ void Robot::tilt(){
   this->publisher.publish(msg);
 }
 
-void Robot::stop(){
-  geometry_msgs::Twist msg;  
-  msg.linear.x = 0;
-  msg.linear.y = 0; 
-  this->publisher.publish(msg);
-}
 
 
 

@@ -64,13 +64,13 @@ int main(int argc, char **argv)
 	//360, 6 minutes seems to work
 	
       // more than 6 minutes
-      if(elapsedTime > 6){
+      if(elapsedTime > 10){
 
 	if(!searched_map){
 
 	  // initial coordinates to start the search
 	  robot.coord_goal.x = 190;
-	  robot.coord_goal.y = 50;
+	  robot.coord_goal.y = 60;
 	  std::cout << "Initializing Search Problem" << std::endl;
 
 	  State goal_state(State(Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0)));
