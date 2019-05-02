@@ -53,7 +53,7 @@ void Robot::seek_goal(){
   geometry_msgs::Twist msg;
   int x = (int)get_x_position_relative()/10;
   int y = (int)get_y_position_relative()/10;
-  
+  /*
   if(x > coord_goal.x )
     msg.linear.x = -3; // left
   if(x < coord_goal.x)
@@ -69,7 +69,7 @@ void Robot::seek_goal(){
     msg.linear.x = 0;  // stop
   if(y == coord_goal.y)
     msg.linear.y = 0; // stop
-  
+  */
 
   // get the yaw to check robot rotation
   double roll, pitch, yaw;
@@ -78,13 +78,96 @@ void Robot::seek_goal(){
   if( yaw < 0 ){ // if pointing down
     msg.angular.z = 0.2; // twist up
   } else // if pointing up
-    msg.angular.z = -0.2; // twist down
-  
+    msg.angular.z = 0.2; // twist down
+
+  std::cout << "yaw is: " << yaw << std::endl;
   
   this->publisher.publish(msg); 
 
 }
 
+void Robot::move_up(){
+
+}
+
+void Robot::turn(char d){
+  geometry_msgs::Twist msg;
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+  float pi = 3.14;
+  float zone = 0.2;
+  float direction = -200000;
+  if(d == 'u')
+    direction = pi/2;
+  if(d == 'd')
+    direction = -pi/2;
+  if(d == 'l')
+    direction = 0;
+  if(d == 'r')
+    direction = pi;
+
+  if( yaw < direction-zone ){ 
+    msg.angular.z = 2; // twist up
+  }
+  if (yaw > direction+zone)
+    msg.angular.z = -2; // twist down
+
+  if( yaw > direction-zone && yaw < direction){ // less then pi/2 but inside the zone
+    msg.angular.z = 0.1; // twist up
+  }
+  if ( yaw < direction+zone && yaw > direction)
+    msg.angular.z = -0.1; // twist down
+  
+  msg.linear.y = 3;
+  this->publisher.publish(msg); 
+}
+
+void Robot::move_down(){
+  geometry_msgs::Twist msg;
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+
+  // go to original oriantation
+  if( yaw < -3.14/2 )
+    msg.angular.z = 0.2;
+  else 
+    msg.angular.z = -0.2;
+
+  msg.linear.x = 3.0; // north is facing to positave x axis
+  this->publisher.publish(msg); 
+}
+
+void Robot::move_left(){
+  geometry_msgs::Twist msg;
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+
+  // go to original oriantation
+  if( yaw < 0 )
+    msg.angular.z = 0.2;
+  else 
+    msg.angular.z = -0.2;
+
+  msg.linear.x = 3.0; // north is facing to positave x axis
+  this->publisher.publish(msg); 
+}
+
+void Robot::move_right(){
+  geometry_msgs::Twist msg;
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+
+  // go to original oriantation
+  if( yaw > 3.14 )
+    msg.angular.z = -0.2;
+  else if(yaw < -3.1)
+    msg.angular.z = 0.2;
+  else
+    msg.angular.z = -0.2;
+  
+  msg.linear.x = 3.0; // north is facing to positave x axis
+  this->publisher.publish(msg); 
+}
 
 void Robot::explore() 
 {
@@ -116,10 +199,11 @@ void Robot::floor_cover(float dist){
     else if (this->northeast > dist+0.5 || this->north > dist+0.5) // if past right bound, go left
       this->drift_left();
   }
-
+  /*
   double roll, pitch, yaw;
   tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
   std::cout << "robot yaw: " << yaw << "\n";
+  */
 }
 
 // Written by oliver, function todrive over a spot on the map

@@ -81,9 +81,14 @@ public:
   void seek_goal();
 
   void floor_cover(float dist);
-  void up_down();
   void tilt();
 
+  void move_up();
+  void move_down();
+  void move_left();
+  void move_right();
+  void turn(char d);
+  
   void stop();
   
   void right_wall_follow();

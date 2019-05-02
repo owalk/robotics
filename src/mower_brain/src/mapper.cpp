@@ -40,118 +40,152 @@ int main(int argc, char **argv)
     struct timeval t1, t2;
     double elapsedTime;
 
+    bool searched_map = false;
+    
     // start timer
     gettimeofday(&t1, NULL);
 
-    // initial coordinates to start the search
-    robot.coord_goal.x = 190;
-    robot.coord_goal.y = 50;
-    std::cout << "Initializing Search Problem" << std::endl;
+    
+    std::list<Coordinate> coord_goal_list;
+    
+    while(ros::ok()) 
+      {
 
-    State goal_state(State(Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0)));
-    Search_Problem search(goal_state, &mower_map, &main_map);
+	robot.move_up();
+	/*
+      robot_x = robot.get_x_position_relative();
+      robot_y = robot.get_y_position_relative();
 
-    std::cout << "Beginning BFS" << std::endl;
-    auto coord_goal_list = search.breadth_first_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
+
+      	//stop timer 2
+	gettimeofday(&t2, NULL);
+
+	elapsedTime = (t2.tv_sec - t1.tv_sec);
+
+	//360, 6 minutes seems to work
+	
+      // more than 6 minutes
+      if(elapsedTime > 6){
+
+	if(!searched_map){
+
+	  // initial coordinates to start the search
+	  robot.coord_goal.x = 190;
+	  robot.coord_goal.y = 50;
+	  std::cout << "Initializing Search Problem" << std::endl;
+
+	  State goal_state(State(Coordinate(robot.coord_goal.x / 10.0, robot.coord_goal.y / 10.0)));
+	  Search_Problem search(goal_state, &mower_map, &main_map);
+
+	  std::cout << "Beginning BFS" << std::endl;
+	  coord_goal_list = search.breadth_first_search(
+							     Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
         
 
-    for (auto item : coord_goal_list) {
-      std::cout << "( " << item.x << ", " << item.y << ") ; ";
-    }
-    std::cout << "Finished BFS" << std::endl;
+	  for (auto item : coord_goal_list) {
+	    std::cout << "( " << item.x << ", " << item.y << ") ; ";
+	  }
+	  std::cout << "Finished BFS" << std::endl;
     
-    std::cout << "Beginning UCS" << std::endl;
-    auto temp_list = search.uniform_cost_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
+	  std::cout << "Beginning UCS" << std::endl;
+	  auto temp_list = search.uniform_cost_search(
+						      Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
 
-    for (auto item : temp_list) {
-        std::cout << "( " << item.x << ", " << item.y << ") ; ";
-    }
-    std::cout << "Finished UCS" << std::endl;
+	  for (auto item : temp_list) {
+	    std::cout << "( " << item.x << ", " << item.y << ") ; ";
+	  }
+	  std::cout << "Finished UCS" << std::endl;
 
-    temp_list.clear();
+	  temp_list.clear();
 
-    std::cout << "Beginning A* with null_heuristic" << std::endl;
-    temp_list = search.a_star_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
+	  std::cout << "Beginning A* with null_heuristic" << std::endl;
+	  temp_list = search.a_star_search(
+					   Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()));
 
-    for (auto item : temp_list) {
-        std::cout << "( " << item.x << ", " << item.y << ") ; ";
-    }
-    std::cout << "Finished A*" << std::endl;
+	  for (auto item : temp_list) {
+	    std::cout << "( " << item.x << ", " << item.y << ") ; ";
+	  }
+	  std::cout << "Finished A*" << std::endl;
 
-    temp_list.clear();
+	  temp_list.clear();
 
-    std::cout << "Beginning A* with manhattan_distance_heuristic" << std::endl;
-    temp_list = search.a_star_search(
-        Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
-        search.manhattan_distance_heuristic);
+	  std::cout << "Beginning A* with manhattan_distance_heuristic" << std::endl;
+	  temp_list = search.a_star_search(
+					   Coordinate(robot.get_x_position_raw(), robot.get_y_position_raw()),
+					   search.manhattan_distance_heuristic);
 
-    for (auto item : temp_list) {
-        std::cout << "( " << item.x << ", " << item.y << ") ; ";
-    }
-    std::cout << "Finished A* with manhattan_distance_heuristic" << std::endl;
+	  for (auto item : temp_list) {
+	    std::cout << "( " << item.x << ", " << item.y << ") ; ";
+	  }
+	  std::cout << "Finished A* with manhattan_distance_heuristic" << std::endl;
 
-    robot.coord_goal.x = coord_goal_list.front().x;
-    robot.coord_goal.y = coord_goal_list.front().y;
+	  robot.coord_goal.x = coord_goal_list.front().x;
+	  robot.coord_goal.y = coord_goal_list.front().y;
 
-    while(ros::ok()) 
-    {
-      int x_raw = (int)robot.get_x_position_relative()/10;
-      int y_raw = (int)robot.get_y_position_relative()/10;
+
+
+	  searched_map = true;
+	}
+	// path from point A to point B should have been found at this point from code above
+
+
+
+
+	int x_raw = (int)robot.get_x_position_relative()/10;
+	int y_raw = (int)robot.get_y_position_relative()/10;
      
-      //stop timer 2
-      gettimeofday(&t2, NULL);
-      
-      elapsedTime = (t2.tv_sec - t1.tv_sec);    
-          
 
-      if( x_raw != robot.coord_goal.x &&
-      y_raw != robot.coord_goal.y){
-    // go to goal
-    std::cout << "search robot seeking goal (" << robot.coord_goal.x <<","<< robot.coord_goal.y<< ")\n";
-    std::cout << "search robot currently at (" << x_raw <<","<< y_raw<< ")\n\n";
-    robot.seek_goal(); 
-      }
-      else{ // set goal
+	if( x_raw == robot.coord_goal.x &&
+	    y_raw == robot.coord_goal.y){
     
-    // follow each point from search function to the goal
-    std::cout << "robot reached (" <<x_raw<<
-      ","<<y_raw<<")\n";
-    robot.stop();
-    coord_goal_list.pop_front();
-    robot.coord_goal.x = coord_goal_list.front().x;
-    robot.coord_goal.y = coord_goal_list.front().y;
-    std::cout << "robot now seeking (" <<robot.coord_goal.x<<
-      ","<<robot.coord_goal.y<<")\n\n";
+	  // follow each point from search function to the goal
+	  std::cout << "robot reached (" <<x_raw<<
+	    ","<<y_raw<<")\n";
+	  robot.stop();
+	  coord_goal_list.pop_front();
+	  robot.coord_goal.x = coord_goal_list.front().x;
+	  robot.coord_goal.y = coord_goal_list.front().y;
+	  std::cout << "robot now seeking (" <<robot.coord_goal.x<<
+	    ","<<robot.coord_goal.y<<")\n\n";
           
+	  
+	} else{ // set goal
+	  // go to goal
+	  std::cout << "search robot seeking goal (" << robot.coord_goal.x <<","<< robot.coord_goal.y<< ")\n";
+	  std::cout << "search robot currently at (" << x_raw <<","<< y_raw<< ")\n\n";
+	  robot.seek_goal(); 
+	}
+	
+	/////////////////////////////////////////////
     
-      }
-      /////////////////////////////////////////////
-    
-      if(coord_goal_list.front().x == 0 &&
-     coord_goal_list.front().y == 0){
-    // end of coordinate list has been hit. end program
-    return 0;
-    }
+	if(coord_goal_list.front().x == 0 &&
+	   coord_goal_list.front().y == 0){
+	  // end of coordinate list has been hit. end program
+	  return 0;
+	}
 
            
       
-      // write out 1's to second map where cut
-      mower_map.cut_area(robot_x, robot_y, main_map);
+	// write out 1's to second map where cut
+	mower_map.cut_area(robot_x, robot_y, main_map);
 
-      // write out 0's where uncut but known as part of the map
-      mower_map.add_uncut(main_map);
+	// write out 0's where uncut but known as part of the map
+	mower_map.add_uncut(main_map);
 
 
       //down here we can do a end of program condition to return 0 from
       // if something
       // return 0;
 
-      robot_x = robot.get_x_position_relative();
-      robot_y = robot.get_y_position_relative();
-      
+
+
+      }else{
+	
+	robot.floor_cover(2.2);
+
+	
+
+
       main_map.draw_point(robot_x, robot_y, false);
             
       // get the west sensor beam
@@ -213,11 +247,14 @@ int main(int argc, char **argv)
           main_map.draw_point(x, y - 1, true);
           main_map.draw_point(x, y, true);
         }
-    
-      // publish the map
-      main_map.publish(1);
-      mower_map.publish(2);
 
+      // publish main map
+      main_map.publish(1); // do it if before 2 mins
+      }
+      
+      // publish the mower map - after 2 minutes we only do this one      
+      mower_map.publish(2);
+	*/
       // spin and sleep
       ros::spinOnce();
       loop_rate.sleep();
