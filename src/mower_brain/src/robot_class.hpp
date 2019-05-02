@@ -83,12 +83,12 @@ public:
   void floor_cover(float dist);
   void tilt();
 
-  void move_up();
-  void move_down();
-  void move_left();
-  void move_right();
-  void turn(char d);
-  
+  int move_up();
+  int move_down();
+  int move_left();
+  int move_right();
+  int turn(char d); // up, down, right
+  int turn_left();
   void stop();
   
   void right_wall_follow();

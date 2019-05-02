@@ -80,93 +80,133 @@ void Robot::seek_goal(){
   } else // if pointing up
     msg.angular.z = 0.2; // twist down
 
-  std::cout << "yaw is: " << yaw << std::endl;
+
   
   this->publisher.publish(msg); 
 
 }
 
-void Robot::move_up(){
+int Robot::move_up(){
+  geometry_msgs::Twist msg;
+  int ret = 0;
+
+  if(turn('u')){
+    msg.linear.x = 3.0;
+    ret = 1;
+    this->publisher.publish(msg);
+  }
+    
+  
+  return ret; // return 1 if moving
 
 }
 
-void Robot::turn(char d){
+
+int Robot::move_down(){
+  geometry_msgs::Twist msg;
+  int ret = 0;
+
+  if(turn('d')){
+    msg.linear.x = 3.0;
+    ret = 1;
+    this->publisher.publish(msg);
+  }
+    
+  
+  return ret; // return 1 if moving
+}
+
+int Robot::move_right(){
+  geometry_msgs::Twist msg;
+  int ret = 0;
+
+  if(turn('r')){
+    msg.linear.x = 3.0;
+    ret = 1;
+    this->publisher.publish(msg);
+  }
+
+  
+  return ret; // return 1 if moving
+
+}
+
+int Robot::move_left(){
+  geometry_msgs::Twist msg;
+  int ret = 0;
+
+  if(turn_left()){
+    msg.linear.x = 3.0;
+    ret = 1;
+    this->publisher.publish(msg);
+  }
+  
+  return ret; // return 1 if moving
+}
+
+int Robot::turn(char d){
   geometry_msgs::Twist msg;
   double roll, pitch, yaw;
   tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
   float pi = 3.14;
-  float zone = 0.2;
+  float zone = 0.13;
   float direction = -200000;
+  int ret = 0;
   if(d == 'u')
     direction = pi/2;
   if(d == 'd')
     direction = -pi/2;
-  if(d == 'l')
-    direction = 0;
   if(d == 'r')
-    direction = pi;
+    direction = 0;
 
-  if( yaw < direction-zone ){ 
+  if( yaw < direction-zone){ 
     msg.angular.z = 2; // twist up
+    ret = 0;
   }
-  if (yaw > direction+zone)
+  if (yaw > direction+zone){
     msg.angular.z = -2; // twist down
-
-  if( yaw > direction-zone && yaw < direction){ // less then pi/2 but inside the zone
-    msg.angular.z = 0.1; // twist up
+    ret = 0;
   }
-  if ( yaw < direction+zone && yaw > direction)
+  
+  if( yaw > direction-zone && yaw < direction ){ // less then pi/2 but inside the zone
+    msg.angular.z = 0.1; // twist up
+    ret = 1;
+  }
+  if ( yaw < direction+zone && yaw > direction){
     msg.angular.z = -0.1; // twist down
+    ret = 1;
+  }
+  this->publisher.publish(msg);
+  return ret; // return 0 if out of zone, 1 if in zone.
+}
+
+
+int Robot::turn_left(){
+  geometry_msgs::Twist msg;
+  double roll, pitch, yaw;
+  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
+  int ret = 0;
+  float zone = 0.13;
   
-  msg.linear.y = 3;
-  this->publisher.publish(msg); 
-}
-
-void Robot::move_down(){
-  geometry_msgs::Twist msg;
-  double roll, pitch, yaw;
-  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
-
   // go to original oriantation
-  if( yaw < -3.14/2 )
-    msg.angular.z = 0.2;
-  else 
-    msg.angular.z = -0.2;
+  if( yaw < 3.14 - zone && yaw > -0.1) // between 0 and pie
+    msg.angular.z = 2;
+  if(yaw > -3.14 + zone && yaw < 0) // between -pi and 0
+    msg.angular.z = -2;
 
-  msg.linear.x = 3.0; // north is facing to positave x axis
-  this->publisher.publish(msg); 
-}
+  if( yaw < 3.14 && yaw > 3.14 - zone ){ // between 0 and pie
+    msg.angular.z = 0.1;
+    ret = 1;
+  }
+  if(yaw > -3.14 && yaw < -3.14+zone){ // between -pi and 0
+    msg.angular.z = -0.1;
+    ret = 1;
+  }
 
-void Robot::move_left(){
-  geometry_msgs::Twist msg;
-  double roll, pitch, yaw;
-  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
-
-  // go to original oriantation
-  if( yaw < 0 )
-    msg.angular.z = 0.2;
-  else 
-    msg.angular.z = -0.2;
-
-  msg.linear.x = 3.0; // north is facing to positave x axis
-  this->publisher.publish(msg); 
-}
-
-void Robot::move_right(){
-  geometry_msgs::Twist msg;
-  double roll, pitch, yaw;
-  tf::Matrix3x3(this->quaternion).getRPY(roll, pitch, yaw);
-
-  // go to original oriantation
-  if( yaw > 3.14 )
-    msg.angular.z = -0.2;
-  else if(yaw < -3.1)
-    msg.angular.z = 0.2;
-  else
-    msg.angular.z = -0.2;
   
-  msg.linear.x = 3.0; // north is facing to positave x axis
+  msg.linear.x = 0; // north is facing to positave x axis
   this->publisher.publish(msg); 
+  return ret;
 }
 
 void Robot::explore() 

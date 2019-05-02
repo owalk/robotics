@@ -51,8 +51,7 @@ int main(int argc, char **argv)
     while(ros::ok()) 
       {
 
-	robot.move_up();
-	/*
+
       robot_x = robot.get_x_position_relative();
       robot_y = robot.get_y_position_relative();
 
@@ -254,7 +253,7 @@ int main(int argc, char **argv)
       
       // publish the mower map - after 2 minutes we only do this one      
       mower_map.publish(2);
-	*/
+
       // spin and sleep
       ros::spinOnce();
       loop_rate.sleep();
