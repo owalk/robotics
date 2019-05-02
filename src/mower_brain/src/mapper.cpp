@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 	//360, 6 minutes seems to work
 	
       // more than 6 minutes
-      if(elapsedTime > 10){
+      if(elapsedTime > 300){
 
 	if(!searched_map){
 
@@ -165,16 +165,6 @@ int main(int argc, char **argv)
 
            
       
-	// write out 1's to second map where cut
-	mower_map.cut_area(robot_x, robot_y, main_map);
-
-	// write out 0's where uncut but known as part of the map
-	mower_map.add_uncut(main_map);
-
-
-      //down here we can do a end of program condition to return 0 from
-      // if something
-      // return 0;
 
 
 
@@ -247,11 +237,21 @@ int main(int argc, char **argv)
           main_map.draw_point(x, y, true);
         }
 
+
+      }
+
+
       // publish main map
       main_map.publish(1); // do it if before 2 mins
-      }
-      
-      // publish the mower map - after 2 minutes we only do this one      
+
+      // write out 1's to second map where cut
+      mower_map.cut_area(robot_x, robot_y, main_map);
+      // write out 0's where uncut but known as part of the map
+      mower_map.add_uncut(main_map);
+
+      mower_map.compare_results();
+
+      // publish the mower map - after 2 minutes we only do this one    
       mower_map.publish(2);
 
       // spin and sleep
